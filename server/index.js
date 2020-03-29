@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const app = express()
-const db = require('./queries')
+const db = require('./db/queries')
 const port = 3000
 
 app.use(bodyParser.json())
@@ -15,6 +15,7 @@ app.get('/', (request, response) => {
   response.json({ info: 'Node.js, Express, and Postgres API' })
 })
 
+// tests/examples of data retrieval from the database
 app.get('/user_emails', db.getUsers)
 app.get('/user_emails/:id', db.getUserById)
 app.post('/user_emails', db.createUser)
