@@ -6,19 +6,32 @@ const logger = require("morgan");
 
 const indexRouter = require("./routes/index");
 const pingRouter = require("./routes/ping");
+const user = require('./routes/userController');
+const bodyParser = require('body-parser');
 
 const { json, urlencoded } = express;
 
 var app = express();
 
+app.use(bodyParser.json());
 app.use(logger("dev"));
 app.use(json());
 app.use(urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, "public")));
 
+app.use((req, res, next) => {
+  res.locals.session = req.session;
+  next();
+});
+
 app.use("/", indexRouter);
-app.use("/ping", pingRouter);
+//app.use("/ping", pingRouter);
+app.use('/user', user);
+
+app.get('*', (req, res) => {
+  res.redirect('/home');
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
