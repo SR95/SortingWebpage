@@ -106,6 +106,24 @@ class LandingPage extends Component {
           >
             Begin Sort
           </Button>
+          <Button
+            style={{ flexGrow: 1 }}
+            disabled={this.state.arrayToSort.length == 0}
+            onClick={() =>
+              this.setState({
+                arrayToSort: [],
+                labelName: "Type Number(s)",
+                labelValue: "",
+                num: null,
+                sortingAlgorithm: "Bubble Sort",
+                sortingIP: false,
+                sortingIndex: 0,
+                autoSort: false
+              })
+            }
+          >
+            Reset
+          </Button>
         </div>
         <div className={classes.headerContainer}>
           <FormControl
