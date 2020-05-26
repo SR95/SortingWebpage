@@ -33,9 +33,7 @@ const landinPageStyle = theme => ({
     alignText: "center",
     marginTop: 20,
     marginLeft: 20,
-    padding: 5,
-
-    backgroundColor: "#D3D3D3"
+    padding: 5
   },
   formControl: {
     marginTop: 25,

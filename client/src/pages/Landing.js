@@ -16,6 +16,7 @@ import { withStyles } from "@material-ui/core/styles";
 import landinPageStyle from "./styles/landingpagestyle";
 
 import bubblesort from "../sorting-algos/bubblesort";
+import insertionsort from "../sorting-algos/insertionsort";
 
 class LandingPage extends Component {
   state = {
@@ -23,10 +24,12 @@ class LandingPage extends Component {
     labelName: "Type Number(s)",
     labelValue: "",
     num: null,
+
     sortingAlgorithm: "Bubble Sort",
     sortingIP: false,
     sortingIndex: 0,
-    autoSort: false
+    autoSort: false,
+    fullySorted: true
   };
 
   setNumber = num => {
@@ -36,6 +39,7 @@ class LandingPage extends Component {
     });
   };
 
+  // ~~~~~~~~~~~ ADD A NUMBER TO ARRAY ~~~~~~~~~~~~~~
   addNumber = () => {
     var newArray = this.state.arrayToSort;
     if (
@@ -59,16 +63,44 @@ class LandingPage extends Component {
     });
   };
 
+  // ~~~~~~~~~~~~~~~ SORTING ~~~~~~~~~~~~~~~~
   sortArray = autoSort => {
-    this.setState({ sortingIP: true });
-    let { newArray, done } = bubblesort(
-      this.state.arrayToSort,
-      this.state.sortingIndex,
-      this.state.autoSort || autoSort
-    );
+    if (this.state.sortingAlgorithm == "Bubble Sort") {
+      this.setState({ sortingIP: true });
+      let { newArray, done } = bubblesort(
+        this.state.arrayToSort,
+        this.state.sortingIndex,
+        this.state.autoSort || autoSort
+      );
 
-    if (done) this.setState({ sortingIP: false });
-    this.setState({ arrayToSort: newArray });
+      // no autosort
+      this.setState({
+        sortingIndex: this.state.sortingIndex + 1,
+        fullySorted: done && this.state.fullySorted
+      });
+
+      // endpoint regardless of autoSort or not
+      if ((this.state.autoSort || autoSort) && done)
+        this.setState({ sortingIP: false, sortingIndex: 0 });
+      else if (
+        !(this.state.autoSort || autoSort) &&
+        done &&
+        this.state.fullySorted &&
+        this.state.sortingIndex == this.state.arrayToSort.length - 1
+      )
+        this.setState({ sortingIP: false, sortingIndex: 0 });
+      // update the array
+      this.setState({ arrayToSort: newArray });
+
+      // update sorting index
+      if (this.state.sortingIndex == this.state.arrayToSort.length - 1)
+        this.setState({ sortingIndex: 0, fullySorted: true });
+    } else if (this.state.sortingAlgorithm == "Insertion Sort") {
+      let newArray = insertionsort(this.state.arrayToSort, true);
+      this.setState({
+        arrayToSort: newArray
+      });
+    }
   };
 
   handleKeyPress = event => {
@@ -108,7 +140,7 @@ class LandingPage extends Component {
           </Button>
           <Button
             style={{ flexGrow: 1 }}
-            disabled={this.state.arrayToSort.length == 0}
+            disabled={this.state.arrayToSort.length === 0}
             onClick={() =>
               this.setState({
                 arrayToSort: [],
@@ -118,7 +150,8 @@ class LandingPage extends Component {
                 sortingAlgorithm: "Bubble Sort",
                 sortingIP: false,
                 sortingIndex: 0,
-                autoSort: false
+                autoSort: false,
+                fullySorted: true
               })
             }
           >
@@ -143,7 +176,9 @@ class LandingPage extends Component {
             >
               <MenuItem value="Bubble Sort">Bubble Sort</MenuItem>
               <MenuItem value="Insertion Sort">Insertion Sort</MenuItem>
-              <MenuItem value="Merge Sort">Merge Sort</MenuItem>
+              <MenuItem disabled value="Merge Sort">
+                Merge Sort
+              </MenuItem>
             </Select>
             <FormHelperText>Default is Bubble Sort.</FormHelperText>
           </FormControl>
@@ -153,7 +188,7 @@ class LandingPage extends Component {
             disabled={this.state.autoSort || !this.state.sortingIP}
             onClick={() => this.sortArray(false)}
           >
-            Next Step
+            Next step
           </Button>
           <ToggleButton
             className={classes.algoTraversalButtons}
@@ -169,12 +204,22 @@ class LandingPage extends Component {
               if (this.state.sortingIP) this.sortArray(true);
             }}
           >
-            Auto Sort
+            Auto sort
           </ToggleButton>
         </div>
         <div className={classes.listContainer}>
-          {this.state.arrayToSort.map(arrayNumber => (
-            <Card className={classes.cardContainer}>
+          {this.state.arrayToSort.map((arrayNumber, index) => (
+            <Card
+              className={classes.cardContainer}
+              style={{
+                backgroundColor:
+                  (index == this.state.sortingIndex ||
+                    index == this.state.sortingIndex - 1) &&
+                  this.state.sortingIP
+                    ? "red"
+                    : "#D3D3D3"
+              }}
+            >
               <Typography variant="h1">{arrayNumber}</Typography>
             </Card>
           ))}
