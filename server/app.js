@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
 const indexRouter = require("./routes/index");
+const pingRouter = require("./routes/ping");
 const bodyParser = require("body-parser");
 
 const { json, urlencoded } = express;
@@ -24,9 +25,11 @@ app.use((req, res, next) => {
 });
 
 app.use("/", indexRouter);
+app.use("/ping", pingRouter);
 
 app.get("*", (req, res) => {
-  console.log("Do Nothing.");
+  res.redirect("/");
+  console.log("Hello World!");
 });
 
 // catch 404 and forward to error handler
