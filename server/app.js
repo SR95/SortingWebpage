@@ -27,11 +27,6 @@ app.use((req, res, next) => {
 app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 
-app.get("*", (req, res) => {
-  res.redirect("/");
-  console.log("Hello World!");
-});
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
