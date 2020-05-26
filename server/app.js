@@ -28,7 +28,7 @@ app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 
 app.get("*", (req, res) => {
-  res.redirect("/home");
+  res.redirect("/");
 });
 
 // catch 404 and forward to error handler
