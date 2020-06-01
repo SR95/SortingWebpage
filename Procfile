@@ -1,1 +1,1 @@
-web: node ./server/bin/www
+web: concurrently -kill-others \"npm run server\" \"npm run client\"
