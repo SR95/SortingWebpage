@@ -1,1 +1,1 @@
-web: concurrently -kill-others \"npm run server\" \"npm run client\"
+web: npm start
