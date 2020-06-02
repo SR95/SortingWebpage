@@ -28,7 +28,7 @@ app.use("/", indexRouter);
 app.use("/ping", pingRouter);
 app.get("/", function(req, res) {
   console.log("Hello World!");
-  res.status(400);
+  res.status(200);
 });
 
 // catch 404 and forward to error handler
