@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "description": "website containing various deals that a user can browse through and add to their own lists.",
-  "main": "index.js",
+  "main": "app.js",
   "engines": {
-    "node": "11.x"
+    "node": "12.16.x",
+    "npm": "6.13.x"
   },
   "scripts": {
     "dev": "nodemon ./bin/www",
-    "final": "node ./bin/www",
     "debug": "nodemon  --inspect ./bin/www",
     "test": "NODE_ENV=test ./node_modules/.bin/mocha --exit --timeout 30000",
     "start": "node ./bin/www"
